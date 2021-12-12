@@ -1,0 +1,1 @@
+Create a text file with some content. pass this file as input to the wordcount MapReduce job for counting words.

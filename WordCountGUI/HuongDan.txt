@@ -1,0 +1,29 @@
+C:\hadoop\MapReduceWordCountGUI>ECHO ON
+
+C:\hadoop\MapReduceWordCountGUI>set HADOOP_LIB=c:\hadoop\hadoop-2.6.0\share\hadoop
+C:\hadoop\MapReduceWordCountGUI>set HADOOP_CLASSPATH=%HADOOP_LIB%\mapreduce\hadoop-mapreduce-client-core-2.6.0.jar;%HADOOP_LIB%\common\hadoop-common-2.6.0.jar;
+
+C:\hadoop\MapReduceWordCountGUI>del /q classes\*.*
+C:\hadoop\MapReduceWordCountGUI>javac -classpath %HADOOP_CLASSPATH% -d classes *.java
+C:\hadoop\MapReduceWordCountGUI>dir classes    
+C:\hadoop\MapReduceWordCountGUI>del /q *.jar
+C:\hadoop\MapReduceWordCountGUI>jar -cvf WordCountGUI.jar -C  classes .
+
+C:\hadoop\MapReduceWordCountGUI>hadoop fs -rm -r /output
+
+C:\hadoop\MapReduceWordCountGUI>hadoop fs -rm -r /tmp
+C:\hadoop\MapReduceWordCountGUI>hadoop fs -rm -r /user
+
+hadoop fs -rm -r /inputXYZ
+hadoop fs -mkdir /inputXYZ
+hadoop fs -put data.txt /inputXYZ
+
+C:\hadoop\MapReduceWordCountGUI>hadoop jar WordCountGUI.jar WordCount 
+
+Nhập vào /inputXYZ/data.txt => Nhấn nút Hadoop Input => RUN Mapreduce
+
+>> Sửa lỗi đọc file  br = new BufferedReader(new FileReader("/output/part-r-00000"));    
+>> Bổ sung chức năng đọc file từ Windows
+>> Chỉnh sửa giao diện.
+
+

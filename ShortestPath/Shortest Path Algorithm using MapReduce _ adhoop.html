@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<!-- saved from url=(0077)https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/ -->
+<html lang="en" class="gr__adhoop_wordpress_com"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Shortest Path Algorithm using MapReduce | adhoop</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="pingback" href="https://adhoop.wordpress.com/xmlrpc.php">
+<link rel="dns-prefetch" href="https://s2.wp.com/">
+<link rel="dns-prefetch" href="https://s1.wp.com/">
+<link rel="dns-prefetch" href="https://s0.wp.com/">
+<link rel="dns-prefetch" href="https://s.pubmine.com/">
+<link rel="dns-prefetch" href="https://x.bidswitch.net/">
+<link rel="dns-prefetch" href="https://static.criteo.net/">
+<link rel="dns-prefetch" href="https://ib.adnxs.com/">
+<link rel="dns-prefetch" href="https://aax.amazon-adsystem.com/">
+<link rel="dns-prefetch" href="https://bidder.criteo.com/">
+<link rel="dns-prefetch" href="https://cas.criteo.com/">
+<link rel="dns-prefetch" href="https://gum.criteo.com/">
+<link rel="dns-prefetch" href="https://ads.pubmatic.com/">
+<link rel="dns-prefetch" href="https://gads.pubmatic.com/">
+<link rel="dns-prefetch" href="https://tpc.googlesyndication.com/">
+<link rel="dns-prefetch" href="https://ad.doubleclick.net/">
+<link rel="dns-prefetch" href="https://googleads.g.doubleclick.net/">
+<link rel="dns-prefetch" href="https://www.googletagservices.com/">
+<link rel="dns-prefetch" href="https://cdn.switchadhub.com/">
+<link rel="dns-prefetch" href="https://delivery.g.switchadhub.com/">
+<link rel="dns-prefetch" href="https://delivery.swid.switchadhub.com/">
+<link rel="alternate" type="application/rss+xml" title="adhoop » Feed" href="https://adhoop.wordpress.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="adhoop » Comments Feed" href="https://adhoop.wordpress.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="adhoop » Shortest Path Algorithm using MapReduce Comments Feed" href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/feed/">
+	<script type="text/javascript">
+		/* <![CDATA[ */
+		function addLoadEvent(func) {
+			var oldonload = window.onload;
+			if (typeof window.onload != 'function') {
+				window.onload = func;
+			} else {
+				window.onload = function () {
+					oldonload();
+					func();
+				}
+			}
+		}
+		/* ]]> */
+	</script>
+			<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/72x72\/","ext":".png","svgUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/s0.wp.com\/wp-includes\/js\/wp-emoji-release.min.js?m=1505864856h&ver=4.8.2"}};
+			!function(a,b,c){function d(a){var b,c,d,e,f=String.fromCharCode;if(!k||!k.fillText)return!1;switch(k.clearRect(0,0,j.width,j.height),k.textBaseline="top",k.font="600 32px Arial",a){case"flag":return k.fillText(f(55356,56826,55356,56819),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,56826,8203,55356,56819),0,0),c=j.toDataURL(),b!==c&&(k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447),0,0),c=j.toDataURL(),b!==c);case"emoji4":return k.fillText(f(55358,56794,8205,9794,65039),0,0),d=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55358,56794,8203,9794,65039),0,0),e=j.toDataURL(),d!==e}return!1}function e(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i,j=b.createElement("canvas"),k=j.getContext&&j.getContext("2d");for(i=Array("flag","emoji4"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./Shortest Path Algorithm using MapReduce _ adhoop_files/wp-emoji-release.min.js.download" type="text/javascript" defer=""></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="all-css-0-1" href="./Shortest Path Algorithm using MapReduce _ adhoop_files/saved_resource" type="text/css" media="all">
+<link rel="stylesheet" id="print-css-1-1" href="./Shortest Path Algorithm using MapReduce _ adhoop_files/global-print.css" type="text/css" media="print">
+<link rel="stylesheet" id="all-css-2-1" href="./Shortest Path Algorithm using MapReduce _ adhoop_files/saved_resource(1)" type="text/css" media="all">
+<script type="text/javascript">
+/* <![CDATA[ */
+var related_posts_js_options = {"post_heading":"h4"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/saved_resource(2)"></script>
+<link rel="stylesheet" id="all-css-0-2" href="./Shortest Path Algorithm using MapReduce _ adhoop_files/style.css" type="text/css" media="all">
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='highlander-comments-ie7-css'  href='https://s1.wp.com/wp-content/mu-plugins/highlander-comments/style-ie7.css?m=1351637563h&#038;ver=20110606' type='text/css' media='all' />
+<![endif]-->
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://adhoop.wordpress.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://s1.wp.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Finding the Top School Districts in California using MapReduce" href="https://adhoop.wordpress.com/2012/02/29/finding-the-top-school-districts-in-california/">
+<link rel="next" title="Installing Apache Hadoop on CenOS 6.2 using Cloudera Manager Free Edition" href="https://adhoop.wordpress.com/2012/03/16/installing_apache_hadoop/">
+<meta name="generator" content="WordPress.com">
+<link rel="canonical" href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/">
+<link rel="shortlink" href="http://wp.me/p2dy8W-43">
+<link rel="alternate" type="application/json+oembed" href="https://public-api.wordpress.com/oembed/?format=json&amp;url=https%3A%2F%2Fadhoop.wordpress.com%2F2012%2F03%2F06%2Fshortest-path-algorithm-in-mapreduce%2F&amp;for=wpcom-auto-discovery"><link rel="alternate" type="application/xml+oembed" href="https://public-api.wordpress.com/oembed/?format=xml&amp;url=https%3A%2F%2Fadhoop.wordpress.com%2F2012%2F03%2F06%2Fshortest-path-algorithm-in-mapreduce%2F&amp;for=wpcom-auto-discovery">
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shortest Path Algorithm using MapReduce">
+<meta property="og:url" content="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/">
+<meta property="og:description" content="Reference: Data-Intensive Text Processing with MapReduce -Jimmy Lin and Chris Dyer Source Code: Shortest Path Algorithm in MapReduce The problem investigated in this section the set of shortest pat…">
+<meta property="article:published_time" content="2012-03-07T05:04:46+00:00">
+<meta property="article:modified_time" content="2012-04-27T20:51:35+00:00">
+<meta property="og:site_name" content="adhoop">
+<meta property="og:image" content="https://adhoop.files.wordpress.com/2012/03/shortest_path.png">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:site" content="@wordpressdotcom">
+<meta name="twitter:text:title" content="Shortest Path Algorithm using MapReduce">
+<meta name="twitter:image" content="https://adhoop.files.wordpress.com/2012/03/shortest_path.png?w=240">
+<meta name="twitter:card" content="summary">
+<meta property="fb:app_id" content="249643311490">
+<meta property="article:publisher" content="https://www.facebook.com/WordPresscom">
+<link rel="shortcut icon" type="image/x-icon" href="https://s2.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48">
+<link rel="icon" type="image/x-icon" href="https://s2.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48">
+<link rel="apple-touch-icon-precomposed" href="https://s0.wp.com/i/webclip.png">
+<link rel="openid.server" href="https://adhoop.wordpress.com/?openidserver=1">
+<link rel="openid.delegate" href="https://adhoop.wordpress.com/">
+<link rel="search" type="application/opensearchdescription+xml" href="https://adhoop.wordpress.com/osd.xml" title="adhoop">
+<link rel="search" type="application/opensearchdescription+xml" href="https://s1.wp.com/opensearch.xml" title="WordPress.com">
+<meta name="application-name" content="adhoop"><meta name="msapplication-window" content="width=device-width;height=device-height"><meta name="msapplication-tooltip" content="I am only one, but still I am one. I cannot do everything, but still I can do something; and because I cannot do everything, I will not refuse to do something that I can do. ~ Helen Keller"><meta name="msapplication-task" content="name=Subscribe;action-uri=https://adhoop.wordpress.com/feed/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=Sign up for a free blog;action-uri=http://wordpress.com/signup/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=WordPress.com Support;action-uri=http://support.wordpress.com/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=WordPress.com Forums;action-uri=http://forums.wordpress.com/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="title" content="Shortest Path Algorithm using MapReduce | adhoop on WordPress.com">
+<meta name="description" content="Reference: Data-Intensive Text Processing with MapReduce -Jimmy Lin and Chris Dyer Source Code: Shortest Path Algorithm in MapReduce The problem investigated in this section the set of shortest paths from the source node to all other nodes in the network. Consider the following Graph: Source Node: It is the node from which we are attempting…">
+		<script type="text/javascript">
+		var __ATA_PP = { pt: 1, ht: 0, tn: 'choco', amp: false };
+		</script>
+		<script type="text/javascript" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/head.js.download"></script>
+		<script type="text/javascript" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/publishertag.js.download"></script><link rel="amphtml" href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/amp/"><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script type="text/javascript">
+	window.google_analytics_uacct = "UA-52447-2";
+</script>
+
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-52447-2']);
+	_gaq.push(['_setDomainName', 'wordpress.com']);
+	_gaq.push(['_initData']);
+	_gaq.push(['_trackPageview']);
+
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+	})();
+</script><script type="text/javascript" async="" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/ga.js.download"></script>
+<script charset="utf-8" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/rate.php"></script><style type="text/css"></style><script type="text/javascript" async="" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/saved_resource(3)"></script><link rel="stylesheet" type="text/css" id="gravatar-card-css" href="./Shortest Path Algorithm using MapReduce _ adhoop_files/hovercard.css"><link rel="stylesheet" type="text/css" id="gravatar-card-services-css" href="./Shortest Path Algorithm using MapReduce _ adhoop_files/services.css"><script type="text/javascript" async="" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/saved_resource(4)"></script><style type="text/css" id="pd_popup_holder_style_5614821_post_251">#pd_popup_holder_5614821_post_251 { position:absolute; display:none; width:350px; height:auto; top:0px; left:0px; z-index:10000; border:solid 1px #CCC; background-color:white; padding:0px 15px;font-family:Arial,Sans;box-shadow: -10px 10px 20px rgba(0, 0, 0, .5);-webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, .25);-moz-box-shadow: 0px 0px 6px rgba(0, 0, 0, .25); }</style></head>
+<body class="post-template-default single single-post postid-251 single-format-standard mp6 customizer-styles-applied color-default highlander-enabled highlander-light" data-gr-c-s-loaded="true">
+
+<div id="page">
+	<div id="header" class="clear-fix">
+		<div id="logo">
+						<h3 id="site-title">
+				<span>
+					<a href="https://adhoop.wordpress.com/" title="adhoop" rel="home">adhoop</a>
+				</span>
+			</h3>
+			<div class="description">I am only one, but still I am one. I cannot do everything, but still I can do something; and because I cannot do everything, I will not refuse to do something that I can do. ~ Helen Keller</div>
+
+		</div><!-- #logo -->
+
+		<div id="nav">
+			<ul class="menu">
+<li><a href="https://adhoop.wordpress.com/">Home</a></li><li class="page_item page-item-336"><a href="https://adhoop.wordpress.com/hadoop-mapreduce/">MapReduce</a></li>
+<li class="page_item page-item-299"><a href="https://adhoop.wordpress.com/linux-howto/">Linux</a></li>
+<li class="page_item page-item-401"><a href="https://adhoop.wordpress.com/scala/">SCALA</a></li>
+</ul>
+		</div><!-- #nav -->
+
+	</div><!-- #header -->
+
+	<div id="main">
+		<a href="https://adhoop.wordpress.com/feed/rss/" id="rss-link">RSS</a>
+		<div id="main-top">
+			<div id="main-bot" class="clear-fix">
+				<div id="content">
+	<div class="post-navigation clear-fix">
+		<div class="nav-previous">
+			<a href="https://adhoop.wordpress.com/2012/02/29/finding-the-top-school-districts-in-california/" rel="prev"><span class="meta-nav">←</span> Finding the Top School Districts in California using&nbsp;MapReduce</a>		</div>
+		<div class="nav-next">
+			<a href="https://adhoop.wordpress.com/2012/03/16/installing_apache_hadoop/" rel="next">Installing Apache Hadoop on CenOS 6.2 using Cloudera Manager Free&nbsp;Edition <span class="meta-nav">→</span></a>		</div>
+	</div><!-- .post-navigation -->
+
+	<div class="post post-251 type-post status-publish format-standard hentry category-hadoop category-mapreduce tag-hadoop-0-20-2-cdh3u2">
+
+		
+				<h2 class="post-title">
+							Shortest Path Algorithm using&nbsp;MapReduce					</h2>
+	
+				<div class="date">
+			<div class="bg">
+									<span class="day">06</span>
+					<span>Mar</span>
+							</div>
+		</div><!-- .date -->
+	
+	<div class="entry">
+		
+		<div class="pd-rating" id="pd_rating_holder_5614821_post_251" style="display: inline-block;"><div class="rating-icons" id="pd_rate_5614821_post_251" style="float:left;"><div class="rating-star-icon" onmouseout="PDRTJS_5614821_post_251.rebuild();" onclick="PDRTJS_5614821_post_251.rate(1);" onmouseover="PDRTJS_5614821_post_251.hover(1);" id="PDRTJS_5614821_post_251_stars_1" style="background-size: 32px 48px !important; cursor: pointer; width: 16px; height: 16px; line-height: 16px; background: url(https://polldaddy.com/images/ratings/star-yellow-sml.png) top left; float: left; padding: 0px; margin: 0px; margin-right: 1px;">&nbsp;</div><div class="rating-star-icon" onmouseout="PDRTJS_5614821_post_251.rebuild();" onclick="PDRTJS_5614821_post_251.rate(2);" onmouseover="PDRTJS_5614821_post_251.hover(2);" id="PDRTJS_5614821_post_251_stars_2" style="background-size: 32px 48px !important; cursor: pointer; width: 16px; height: 16px; line-height: 16px; background: url(https://polldaddy.com/images/ratings/star-yellow-sml.png) top left; float: left; padding: 0px; margin: 0px; margin-right: 1px;">&nbsp;</div><div class="rating-star-icon" onmouseout="PDRTJS_5614821_post_251.rebuild();" onclick="PDRTJS_5614821_post_251.rate(3);" onmouseover="PDRTJS_5614821_post_251.hover(3);" id="PDRTJS_5614821_post_251_stars_3" style="background-size: 32px 48px !important; cursor: pointer; width: 16px; height: 16px; line-height: 16px; background: url(https://polldaddy.com/images/ratings/star-yellow-sml.png) top left; float: left; padding: 0px; margin: 0px; margin-right: 1px;">&nbsp;</div><div class="rating-star-icon" onmouseout="PDRTJS_5614821_post_251.rebuild();" onclick="PDRTJS_5614821_post_251.rate(4);" onmouseover="PDRTJS_5614821_post_251.hover(4);" id="PDRTJS_5614821_post_251_stars_4" style="background-size: 32px 48px !important; cursor: pointer; width: 16px; height: 16px; line-height: 16px; background: url(https://polldaddy.com/images/ratings/star-yellow-sml.png) bottom left; float: left; padding: 0px; margin: 0px; margin-right: 1px;">&nbsp;</div><div class="rating-star-icon" onmouseout="PDRTJS_5614821_post_251.rebuild();" onclick="PDRTJS_5614821_post_251.rate(5);" onmouseover="PDRTJS_5614821_post_251.hover(5);" id="PDRTJS_5614821_post_251_stars_5" style="background-size: 32px 48px !important; cursor: pointer; width: 16px; height: 16px; line-height: 16px; background: url(https://polldaddy.com/images/ratings/star-yellow-sml.png) bottom left; float: left; padding: 0px; margin: 0px; margin-right: 1px;">&nbsp;</div></div><span style="float:left;">&nbsp;</span><div id="rating_info_5614821_post_251" style="display:block;float:left;background:url(https://polldaddy.com/images/ratings/info.png) no-repeat 3px 2px;width:16px;height:16px;cursor:pointer; null " onclick="javascript:PDRTJS_5614821_post_251.togglePopup();return false;"><span style="display:none;">i</span></div><div class="pd_popup_holder" id="pd_popup_holder_5614821_post_251">&nbsp;</div><div class="rating-msg" id="PDRTJS_5614821_post_251_msg" style="float:left; padding-left: 5px; text-align: left; font:normal normal /16px ; color: #;">4 Votes</div><p style="padding: 0px; margin: 0px; clear: both;"></p></div><br><p><strong>Reference</strong>: <a href="http://www.umiacs.umd.edu/~jimmylin/book.html" title="http://www.umiacs.umd.edu/~jimmylin/book.html">Data-Intensive Text Processing with MapReduce -Jimmy Lin and Chris Dyer</a><br>
+<strong>Source Code</strong>: <a href="https://github.com/vadusumilli74/adhoop/tree/master/shortest_path" title="https://github.com/vadusumilli74/adhoop/tree/master/shortest_path">Shortest Path Algorithm in MapReduce</a></p>
+<p>The problem investigated in this section the set of shortest paths from the source node to all other nodes in the network. Consider the following Graph:</p>
+<div data-shortcode="caption" id="attachment_250" style="width: 655px" class="wp-caption alignnone"><a href="https://adhoop.files.wordpress.com/2012/03/shortest_path.png"><img data-attachment-id="250" data-permalink="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/shortest_path/" data-orig-file="https://adhoop.files.wordpress.com/2012/03/shortest_path.png?w=645&amp;h=379" data-orig-size="937,551" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;}" data-image-title="shortest_path" data-image-description="&lt;p&gt;The image shows a typical network where the parameter enclosed in parenthesis represents the length of an Edge. Each Edge is numbered sequentially.&lt;/p&gt;
+&lt;p&gt;Reference::http://www.me.utexas.edu/~jensen/methods/net.pdf/netshp.pdf&lt;/p&gt;
+" data-medium-file="https://adhoop.files.wordpress.com/2012/03/shortest_path.png?w=645&amp;h=379?w=300" data-large-file="https://adhoop.files.wordpress.com/2012/03/shortest_path.png?w=645&amp;h=379?w=645" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/shortest_path.png" alt="Shortest Path Problem MapReduce" title="shortest_path" width="645" height="379" class="size-full wp-image-250" srcset="https://adhoop.files.wordpress.com/2012/03/shortest_path.png?w=645&amp;h=379 645w, https://adhoop.files.wordpress.com/2012/03/shortest_path.png?w=150&amp;h=88 150w, https://adhoop.files.wordpress.com/2012/03/shortest_path.png?w=300&amp;h=176 300w, https://adhoop.files.wordpress.com/2012/03/shortest_path.png?w=768&amp;h=452 768w, https://adhoop.files.wordpress.com/2012/03/shortest_path.png 937w" sizes="(max-width: 645px) 100vw, 645px"></a><p class="wp-caption-text">Shortest Path Problem MapReduce</p></div>
+<p><strong>Source Node</strong>: It is the node from which we are attempting to find the shortest path to all other nodes.<br>
+<strong>Node Count</strong>: 10<br>
+<strong>Edge Count</strong>: 20<br>
+<strong>Adjacency List</strong>:</p>
+<pre style="font-size:.75em;">{1,0,UNDISCOVERED}	{2,40}	{3,8}	{4,10}
+{2,INFINITY,UNDISCOVERED}	{5,6}	{7,10}
+{3,INFINITY,UNDISCOVERED}	{2,4}	{4,12}	{6,2}
+{4,INFINITY,UNDISCOVERED}	{6,1}
+{5,INFINITY,UNDISCOVERED}	{3,2}	{6,2}	{7,4}
+{6,INFINITY,UNDISCOVERED}	{8,4}	{9,3}
+{7,INFINITY,UNDISCOVERED}	{8,20}	{10,1}
+{8,INFINITY,UNDISCOVERED}	{5,0}	{10,20}
+{9,INFINITY,UNDISCOVERED}	{4,6}	{10,2}
+</pre>
+<p><strong>Initial Adjacency List Format</strong>:</p>
+<pre style="font-size:.75em;"><em>{Node Number,Node Weight,Node Status} TAB {Adjacent Node, Edge Weight} TAB {Adjacent Node, Edge Weight} ...</em>
+Node Number = From Node Number (For all Nodes)
+Node Weight = 0 (For the Source Node), 
+              INFINITY (For other Nodes)
+              This is the minimum weight it takes to reach from the Source Node to the From Node
+Node Status = UNDISCOVERED (For all Nodes)
+Adjacent Node = Adjacent Node Number with an Edge from the From Node
+Edge Weight = Weight of the Edge from the From Node to the Adjacent Node
+</pre>
+<p><strong>Intermediate Adjacency List Format</strong>:</p>
+<pre style="font-size:.75em;"><em>{Node Number,Node Weight,Node Status,Path} TAB {Adjacent Node, Edge Weight} TAB {Adjacent Node, Edge Weight} ...</em>
+Node Number = From Node Number (For all Nodes)
+Node Weight = 0 (For the Source Node)
+              Minimum weight it takes in reaching from the Source Node to the From Node (For other Nodes)
+Node Status = UNDISCOVERED (For Nodes that are not Expanded)
+              DISCOVERED (For Nodes that are Expanded)
+Path = The path from the Source Node to the From Node
+Adjacent Node = Adjacent Node Number with an Edge from the From Node
+Edge Weight = Weight of the Edge from the From Node to the Adjacent Node
+</pre>
+<p>
+<strong>Mapper Pseudo Code</strong>:<br>
+Input Key: {Node Number,Node Weight,Node Status} OR {Node Number,Node Weight,Node Status,Path}<br>
+Input Value: {Adjacent Node, Edge Weight} TAB {Adjacent Node, Edge Weight} …</p>
+<pre style="font-size:.75em;">For Every From Node [Key-Value Pair]
+  If From Node Is Not Discovered And Has A Valid Weight
+    Updated Path = From Node Path + From Node
+    Emit A Updated From Node Key-Value Pair With 
+      From Node Status = DISCOVERED
+      From Node Path = Updated Path
+    For Every Adjacent Node
+      Emit A New Adjacent Node Key-Value Pair With 
+        Adjacent Node Weight = From Node Weight + Edge Weight
+        Adjacent Node Status = UNDISCOVERED
+        Adjacent Node Path = Updated Path
+  Else
+    Emit The Received From Node Key-Value Pair
+  End
+</pre>
+<p>
+<strong>Output Key Comparator Pseudo Code</strong>:<br>
+Input Key / WritableComparable: {Node Number,Node Weight,Node Status,Path}</p>
+<pre style="font-size:.75em;">If From Node Number == To Node Number
+    Determine If From Node Weight Is Greater / Equal / Lesser Than To Node Weight
+Else
+    Determine If From Node Number Is Greater / Lesser Than To Node Number
+End
+</pre>
+<p>
+<strong>Output Value Grouping Comparator Pseudo Code</strong>:<br>
+Input Key / WritableComparable: {Node Number,Node Weight,Node Status,Path}</p>
+<pre style="font-size:.75em;">If From Node Number == To Node Number
+    They Belong To The Same Group
+Else
+    Determine If From Node Number Is Greater / Lesser Than To Node Number
+End
+</pre>
+<p>
+<strong>Partitioner Pseudo Code</strong>:<br>
+Input Key / WritableComparable: {Node Number,Node Weight,Node Status,Path}</p>
+<pre style="font-size:.75em;">Use The Node Number To Determine The Partition
+</pre>
+<p>
+<strong>Reducer Pseudo Code</strong>:<br>
+Input Key: {Node Number,Node Weight,Node Status,Path}<br>
+Input Values: {Adjacent Node, Edge Weight} TAB {Adjacent Node, Edge Weight} …</p>
+<pre style="font-size:.75em;">For Every From Node [Key]
+  New Value = Append Each Adjacent Node [Value] Separated by a TAB
+  Emit the Key-New Value Pair
+</pre>
+<p></p>
+<p><strong>Explanation</strong>:<br>
+The MapReduce Job is repeatedly run until no UNDISCOVERED Adjacency Node Key-Value Pairs are emitted. The output of the current iteration is used as the input of the next iteration. Optionally the MapReduce Job can be run one more time with one Reducer so as to receive a Sorted output.</p>
+<p><strong>Iteration 1: Mapper Output [Before Sorting, Grouping]</strong>:</p>
+<pre style="font-size:.75em;">{1,0,DISCOVERED,1}	{2,40}	{3,8}	{4,10} &lt;== Expanded 
+{2,40,UNDISCOVERED,1}
+{3,8,UNDISCOVERED,1}
+{4,10,UNDISCOVERED,1}
+{2,INFINITY,UNDISCOVERED}	{5,6}	{7,10}
+{3,INFINITY,UNDISCOVERED}	{2,4}	{4,12}	{6,2}
+{4,INFINITY,UNDISCOVERED}	{6,1}
+{5,INFINITY,UNDISCOVERED}	{3,2}	{6,2}	{7,4}
+{6,INFINITY,UNDISCOVERED}	{8,4}	{9,3}
+{7,INFINITY,UNDISCOVERED}	{8,20}	{10,1}
+{8,INFINITY,UNDISCOVERED}	{5,0}	{10,20}
+{9,INFINITY,UNDISCOVERED}	{4,6}	{10,2}
+</pre>
+<p><strong>Iteration 1: Mapper Output [After Sorting, Grouping]</strong>:</p>
+<pre style="font-size:.75em;">{1,0,DISCOVERED,1}	{2,40}	{3,8}	{4,10} &lt;== Expanded 
+{2,40,UNDISCOVERED,1} &lt;== First Key
+{2,INFINITY,UNDISCOVERED}	{5,6}	{7,10} &lt;== Second Key With Values
+{3,8,UNDISCOVERED,1} &lt;== First Key
+{3,INFINITY,UNDISCOVERED}	{2,4}	{4,12}	{6,2} &lt;== Second Key With Values
+{4,10,UNDISCOVERED,1} &lt;== First Key
+{4,INFINITY,UNDISCOVERED}	{6,1} &lt;== Second Key With Values
+{5,INFINITY,UNDISCOVERED}	{3,2}	{6,2}	{7,4}
+{6,INFINITY,UNDISCOVERED}	{8,4}	{9,3}
+{7,INFINITY,UNDISCOVERED}	{8,20}	{10,1}
+{8,INFINITY,UNDISCOVERED}	{5,0}	{10,20}
+{9,INFINITY,UNDISCOVERED}	{4,6}	{10,2}
+</pre>
+<p><strong>Iteration 1: Reducer Input / Output</strong>:<br>
+<strong>Iteration 2: Mapper Input</strong>:</p>
+<pre style="font-size:.75em;">{1,0,DISCOVERED,1}	{2,40}	{3,8}	{4,10}
+{2,40,UNDISCOVERED,1}	{5,6}	{7,10} &lt;== First Key With Collection Of Values 
+{3,8,UNDISCOVERED,1}	{2,4}	{4,12}	{6,2} &lt;== First Key With Collection Of Values
+{4,10,UNDISCOVERED,1}	{6,1} &lt;== First Key With Collection Of Values
+{5,INFINITY,UNDISCOVERED}	{3,2}	{6,2}	{7,4}
+{6,INFINITY,UNDISCOVERED}	{8,4}	{9,3}
+{7,INFINITY,UNDISCOVERED}	{8,20}	{10,1}
+{8,INFINITY,UNDISCOVERED}	{5,0}	{10,20}
+{9,INFINITY,UNDISCOVERED}	{4,6}	{10,2}
+</pre>
+<p><strong>Iteration 2: Mapper Output [After Sorting, Grouping]</strong>:</p>
+<pre style="font-size:.75em;">{1,0,DISCOVERED,1}	{2,40}	{3,8}	{4,10}
+{2,12,UNDISCOVERED,1-3} &lt;== First Key
+{2,40,DISCOVERED,1}	{5,6}	{7,10} &lt;== Expanded &lt;== Second Key With Values
+{3,8,DISCOVERED,1}	{2,4}	{4,12}	{6,2} &lt;== Expanded
+{4,10,DISCOVERED,1}	{6,1} &lt;== Expanded &lt;== First Key
+{4,20,UNDISCOVERED,1-3} &lt;== Second Key With Values
+{5,46,UNDISCOVERED,1-2} &lt;== First Key
+{5,INFINITY,UNDISCOVERED}	{3,2}	{6,2}	{7,4} &lt;== Second Key With Values
+{6,10,UNDISCOVERED,1-3} &lt;== First Key
+{6,11,UNDISCOVERED,1-4} &lt;== Second Key With Values
+{6,INFINITY,UNDISCOVERED}	{8,4}	{9,3} &lt;== Third Key With Values
+{7,50,UNDISCOVERED,1-2} &lt;== First Key
+{7,INFINITY,UNDISCOVERED}	{8,20}	{10,1} &lt;== Second Key With Values
+{8,INFINITY,UNDISCOVERED}	{5,0}	{10,20}
+{9,INFINITY,UNDISCOVERED}	{4,6}	{10,2}
+</pre>
+<p><strong>Iteration 2: Reducer Input / Output</strong>:<br>
+<strong>Iteration 3: Mapper Input</strong>:</p>
+<pre style="font-size:.75em;">{1,0,DISCOVERED,1}	{2,40}	{3,8}	{4,10}
+{2,12,UNDISCOVERED,1-3}	{5,6}	{7,10} &lt;== First Key With Collection Of Values 
+{3,8,DISCOVERED,1}	{2,4}	{4,12}	{6,2}
+{4,10,DISCOVERED,1}	{6,1} &lt;== First Key With Collection Of Values 
+{5,46,UNDISCOVERED,1-2}	{3,2}	{6,2}	{7,4} &lt;== First Key With Collection Of Values 
+{6,10,UNDISCOVERED,1-3}	{8,4}	{9,3} &lt;== First Key With Collection Of Values 
+{7,50,UNDISCOVERED,1-2}	{8,20}	{10,1} &lt;== First Key With Collection Of Values 
+{8,INFINITY,UNDISCOVERED}	{5,0}	{10,20}
+{9,INFINITY,UNDISCOVERED}	{4,6}	{10,2}
+</pre>
+<p>.<br>
+.<br>
+.<br>
+<strong>For your reference the intermediate MapReduce Job outputs are located in the source folder.</strong></p>
+<p><strong>Final Output</strong>:</p>
+<pre style="font-size:.75em;">{1,0,DISCOVERED,1}	{2,40}	{3,8}	{4,10}
+{2,12,DISCOVERED,1-3-2}	{5,6}	{7,10}
+{3,8,DISCOVERED,1-3}	{2,4}	{4,12}	{6,2}
+{4,10,DISCOVERED,1-4}	{6,1}
+{5,14,DISCOVERED,1-3-6-8-5}	{3,2}	{6,2}	{7,4}
+{6,10,DISCOVERED,1-3-6}	{8,4}	{9,3}
+{7,18,DISCOVERED,1-3-6-8-5-7}	{8,20}	{10,1}
+{8,14,DISCOVERED,1-3-6-8}	{5,0}	{10,20}
+{9,13,DISCOVERED,1-3-6-9}	{4,6}	{10,2}
+{10,15,DISCOVERED,1-3-6-9-10}	
+{11,INFINITY,UNDISCOVERED}	{12,6}	{13,2}
+</pre>
+<p><strong>The Path in each Key-Value Pair is the Weighted Shortest Path from the Source Node [0] to the Node in the Key.</strong></p>
+			<style type="text/css">
+			div.wpmrec2x{max-width:610px;}
+			div.wpmrec2x div.u > div{float:left;margin-right:10px;}
+			div.wpmrec2x div.u > div:nth-child(3n){margin-right:0px;}
+			</style>		<div class="wpcnt">
+			<div class="wpa wpmrec wpmrec2x" style="display: inline-block !important;">
+				<span class="wpa-about">Advertisements</span>
+				<div class="u">
+										<script type="text/javascript" id="s26942">
+						(function(g,$){if("undefined"!=typeof g.__ATA){
+							g.__ATA.initAd({collapseEmpty:'after', sectionId:26942, width:300, height:250});
+							g.__ATA.initAd({collapseEmpty:'after', sectionId:114160, width:300, height:250});
+						}})(window,jQuery);
+					</script><div id="adtags-1" style="width:300px;height:250px;"><iframe frameborder="0" scrolling="no" width="300" height="250" style="border:none;overflow:hidden;width:300px;height:250px;" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/saved_resource.html"></iframe></div><div id="adtags-2" style="width:300px;height:250px;"><iframe frameborder="0" scrolling="no" width="300" height="250" style="border:none;overflow:hidden;width:300px;height:250px;" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/saved_resource(8).html"></iframe></div>
+				</div>
+						<div id="crt-1002567977" style="width: 300px; height: 250px; display: none !important;"></div>
+		<script type="text/javascript">
+		var o = document.getElementById('crt-1002567977');
+		if ("undefined"!=typeof Criteo) {
+			var p = o.parentNode;
+			p.style.setProperty('display', 'inline-block', 'important');
+			o.style.setProperty('display', 'block', 'important');
+			Criteo.DisplayAcceptableAdIfAdblocked({zoneid:388248,containerid:"crt-1002567977",collapseContainerIfNotAdblocked:true,"callifnotadblocked": function () {var o = document.getElementById('crt-1002567977'); o.style.setProperty('display','none','important');o.style.setProperty('visbility','hidden','important'); } });
+		} else {
+			o.style.setProperty('display', 'none', 'important');
+			o.style.setProperty('visibility', 'hidden', 'important');
+		}
+		</script>		<div id="crt-198273135" style="width: 300px; height: 250px; display: none !important;"></div>
+		<script type="text/javascript">
+		var o = document.getElementById('crt-198273135');
+		if ("undefined"!=typeof Criteo) {
+			var p = o.parentNode;
+			p.style.setProperty('display', 'inline-block', 'important');
+			o.style.setProperty('display', 'block', 'important');
+			Criteo.DisplayAcceptableAdIfAdblocked({zoneid:837497,containerid:"crt-198273135",collapseContainerIfNotAdblocked:true,"callifnotadblocked": function () {var o = document.getElementById('crt-198273135'); o.style.setProperty('display','none','important');o.style.setProperty('visbility','hidden','important'); } });
+		} else {
+			o.style.setProperty('display', 'none', 'important');
+			o.style.setProperty('visibility', 'hidden', 'important');
+		}
+		</script>
+			</div>
+		</div><div id="jp-post-flair" class="sharedaddy sd-rating-enabled sd-like-enabled sd-sharing-enabled"><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title">Share this:</h3><div class="sd-content"><ul><li class="share-twitter"><a rel="nofollow" data-shared="sharing-twitter-251" class="share-twitter sd-button share-icon" href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/?share=twitter&amp;nb=1" target="_blank" title="Click to share on Twitter"><span>Twitter</span></a></li><li class="share-facebook"><a rel="nofollow" data-shared="sharing-facebook-251" class="share-facebook sd-button share-icon" href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/?share=facebook&amp;nb=1" target="_blank" title="Share on Facebook"><span>Facebook</span></a></li><li class="share-end"></li></ul></div></div></div><div class="sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-loaded" id="like-post-wrapper-32782186-251-59d7433533bf2" data-src="//widgets.wp.com/likes/#blog_id=32782186&amp;post_id=251&amp;origin=adhoop.wordpress.com&amp;obj_id=32782186-251-59d7433533bf2" data-name="like-post-frame-32782186-251-59d7433533bf2"><h3 class="sd-title">Like this:</h3><div class="likes-widget-placeholder post-likes-widget-placeholder" style="height: 55px; display: none;"><span class="button"><span>Like</span></span> <span class="loading">Loading...</span></div><iframe class="post-likes-widget jetpack-likes-widget" name="like-post-frame-32782186-251-59d7433533bf2" height="55px" width="100%" frameborder="0" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/saved_resource(9).html"></iframe><span class="sd-text-color"></span><a class="sd-link-color"></a></div>
+<div id="jp-relatedposts" class="jp-relatedposts" style="display: block;">
+	<h3 class="jp-relatedposts-headline"><em>Related</em></h3>
+<div class="jp-relatedposts-items jp-relatedposts-items-minimal"><p class="jp-relatedposts-post jp-relatedposts-post0" data-post-id="363" data-post-format="false"><span class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://adhoop.wordpress.com/2012/03/27/insane-in-the-membrane-determine-available-paths-using-mapreduce/" title="Insane in the Membrane: Determine Available Paths using MapReduce
+
+Puzzle: Since there&#39;s so much other stuff in the nucleus, like proteins, it is  sometimes troublesome finding room for a genome. The nucleus is represented  as a N-nanometer by M-nanometer grid, and at each 1nm * 1nm square is known whether or not it is filled by something. Also, the…" rel="nofollow" data-origin="251" data-position="0">Insane in the Membrane: Determine Available Paths using MapReduce</a></span><span class="jp-relatedposts-post-context">In "Hadoop"</span></p><p class="jp-relatedposts-post jp-relatedposts-post1" data-post-id="307" data-post-format="false"><span class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://adhoop.wordpress.com/2012/03/16/installing_apache_hadoop/" title="Installing Apache Hadoop on CenOS 6.2 using Cloudera Manager Free Edition
+
+Unless Otherwise Mentioned, The Following Instructions Applies To All Machines. Hardware Configuration: 2 x DELL Precision 390 [ Master, Slave] Intel(R) Core(TM)2 CPU 6700 @ 2.66GHz 64 Bit 4GB RAM 250GB Hard Drive OS Installation: CentOS 6.2 During Set Hostname, please make sure to enter a HOST NAME and not a FQDN. During Check…" rel="nofollow" data-origin="251" data-position="1">Installing Apache Hadoop on CenOS 6.2 using Cloudera Manager Free Edition</a></span><span class="jp-relatedposts-post-context">In "Hadoop"</span></p><p class="jp-relatedposts-post jp-relatedposts-post2" data-post-id="206" data-post-format="false"><span class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://adhoop.wordpress.com/2012/02/16/generate-a-list-of-anagrams-round-3/" title="Anagrams using MapReduce - Round 3 - Sorted Words &amp;amp; Anagrams
+
+This version of the program uses a simple Driver, Mapper, and a Reducer to generate a list of Sorted Words and Sorted Anagrams from a list of Words. The input from the previous post Generate a list of Anagrams – Round 2 – Unsorted Words &amp; Sorted Anagrams will be…" rel="nofollow" data-origin="251" data-position="2">Anagrams using MapReduce - Round 3 - Sorted Words &amp; Anagrams</a></span><span class="jp-relatedposts-post-context">In "Hadoop"</span></p></div></div></div>
+		<div class="cl">&nbsp;</div>
+
+		
+			</div><!-- .entry -->
+
+				<div class="meta">
+			<div class="bg">
+				<span class="comments-num"><a href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/#comments">2 Comments</a></span>
+				<p>Posted by <a href="https://adhoop.wordpress.com/author/vadusumilli74/" title="Posts by Venkata (Ravi) Adusumilli" rel="author">Venkata (Ravi) Adusumilli</a> on March 6, 2012 in <a href="https://adhoop.wordpress.com/category/hadoop/" rel="category tag">Hadoop</a>, <a href="https://adhoop.wordpress.com/category/mapreduce/" rel="category tag">MapReduce</a></p>
+			</div>
+			<div class="bot">&nbsp;</div>
+		</div><!-- .meta -->
+		<p class="tags">Tags: <a href="https://adhoop.wordpress.com/tag/hadoop-0-20-2-cdh3u2/" rel="tag">Hadoop 0.20.2-CDH3U2</a></p>	</div>
+	<div class="post-navigation clear-fix">
+		<div class="nav-previous">
+			<a href="https://adhoop.wordpress.com/2012/02/29/finding-the-top-school-districts-in-california/" rel="prev"><span class="meta-nav">←</span> Finding the Top School Districts in California using&nbsp;MapReduce</a>		</div>
+		<div class="nav-next">
+			<a href="https://adhoop.wordpress.com/2012/03/16/installing_apache_hadoop/" rel="next">Installing Apache Hadoop on CenOS 6.2 using Cloudera Manager Free&nbsp;Edition <span class="meta-nav">→</span></a>		</div>
+	</div><!-- .post-navigation -->
+
+	
+			<div id="comments">
+
+
+			<h3 id="comments-title">
+			2 responses to “<em>Shortest Path Algorithm using&nbsp;MapReduce</em>”			</h3>
+
+
+			<ol class="commentlist">
+					<li class="comment even thread-even depth-1 comment highlander-comment">
+		<div class="comment-body" id="comment-25">
+			<img alt="" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/bc9a24ee5430e8e806a2cf593fb8fca3" class="avatar avatar-70 grav-hashed grav-hijack" height="70" width="70" id="grav-bc9a24ee5430e8e806a2cf593fb8fca3-0">			<p class="author">
+				<a href="http://gravatar.com/nellaivijay" rel="external nofollow" class="url">nellaivijay</a>			</p>
+			<p class="comment-meta">
+				August 1, 2012 at 8:56 PM			</p>
+			<div class="comment-content">
+				
+				<p>g8</p>
+				<div class="alignleft"></div>
+
+			</div>
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/?replytocom=25#respond" onclick="return addComment.moveForm( &quot;comment-25&quot;, &quot;25&quot;, &quot;respond&quot;, &quot;251&quot; )" aria-label="Reply to nellaivijay">Reply</a>			</div>
+			<div class="cl">&nbsp;</div>
+		</div>
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1 comment highlander-comment">
+		<div class="comment-body" id="comment-29">
+			<img alt="" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/13d31cf81595611fa0a5fe5fb21fdd31" class="avatar avatar-70 grav-hashed grav-hijack" height="70" width="70" id="grav-13d31cf81595611fa0a5fe5fb21fdd31-0">			<p class="author">
+				hemanth vijay			</p>
+			<p class="comment-meta">
+				January 3, 2013 at 9:58 PM			</p>
+			<div class="comment-content">
+				
+				<p>thnx for the code……….</p>
+				<div class="alignleft"></div>
+
+			</div>
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/?replytocom=29#respond" onclick="return addComment.moveForm( &quot;comment-29&quot;, &quot;29&quot;, &quot;respond&quot;, &quot;251&quot; )" aria-label="Reply to hemanth vijay">Reply</a>			</div>
+			<div class="cl">&nbsp;</div>
+		</div>
+	</li><!-- #comment-## -->
+			</ol>
+
+
+
+	<div id="respond" class="comment-respond js">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/#respond" style="display:none;">Cancel reply</a></small></h3>			<form action="https://adhoop.wordpress.com/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+				<input type="hidden" id="highlander_comment_nonce" name="highlander_comment_nonce" value="745a9feb9a"><input type="hidden" name="_wp_http_referer" value="/2012/03/06/shortest-path-algorithm-in-mapreduce/">
+<input type="hidden" name="hc_post_as" id="hc_post_as" value="guest">
+
+<div class="comment-form-field comment-textarea">
+	
+	<div id="comment-form-comment"><textarea tabindex="-1" style="position: absolute; top: -999px; left: 0px; right: auto; bottom: auto; border: 0px; padding: 0px; box-sizing: content-box; word-wrap: break-word; overflow: hidden; transition: none; height: 0px !important; min-height: 0px !important; font-family: Arial, Helvetica, Tahoma, Verdana, sans-serif; font-size: 14px; font-weight: 400; font-style: normal; letter-spacing: 0px; text-transform: none; text-decoration: none solid rgba(0, 0, 0, 0.7); word-spacing: 0px; text-indent: 0px; line-height: normal; width: 623px;" class="autosizejs "></textarea><textarea id="comment" name="comment" title="Enter your comment here..." placeholder="Enter your comment here..." style="height: 36px; overflow: hidden; word-wrap: break-word; resize: none;"></textarea></div>
+</div>
+
+<div id="comment-form-identity" style="display: none;">
+
+	<div id="comment-form-nascar">
+		<p>Fill in your details below or click an icon to log in:</p>
+		<ul>
+			<li class="selected" style="display:none;">
+				<a href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/#comment-form-guest" id="postas-guest" title="Guest">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/#comment-form-load-service:WordPress.com" id="postas-wordpress" title="WordPress.com">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/#comment-form-load-service:Twitter" id="postas-twitter" title="Twitter">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/#comment-form-load-service:Facebook" id="postas-facebook" title="Facebook">
+					<span></span>
+				</a>
+			</li>
+			<li>
+			<iframe id="googleplus-sign-in" name="googleplus-sign-in" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/saved_resource(10).html" width="24" height="24" scrolling="no" allowtransparency="true" seamless="seamless" frameborder="0"></iframe>
+			</li>
+		</ul>
+	</div>
+
+	<div id="comment-form-guest" class="comment-form-service selected">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+<a href="https://gravatar.com/site/signup/" target="_blank">				<img src="./Shortest Path Algorithm using MapReduce _ adhoop_files/ad516503a11cd5ca435acc9bb6523536" alt="Gravatar" width="25" class="no-grav">
+</a>			</div>
+
+				<div class="comment-form-fields">
+				<div class="comment-form-field comment-form-email">
+					<label for="email">Email <span class="required">(required)</span> <span class="nopublish">(Address never made public)</span></label>
+					<div class="comment-form-input"><input id="email" name="email" type="email" value=""></div>
+				</div>
+				<div class="comment-form-field comment-form-author">
+					<label for="author">Name <span class="required">(required)</span></label>
+					<div class="comment-form-input"><input id="author" name="author" type="text" value=""></div>
+				</div>
+				<div class="comment-form-field comment-form-url">
+					<label for="url">Website</label>
+					<div class="comment-form-input"><input id="url" name="url" type="url" value=""></div>
+				</div>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-wordpress" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="./Shortest Path Algorithm using MapReduce _ adhoop_files/ad516503a11cd5ca435acc9bb6523536" alt="WordPress.com Logo" width="25" class="no-grav">
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="wp_avatar" id="wordpress-avatar" class="comment-meta-wordpress" value="">
+				<input type="hidden" name="wp_user_id" id="wordpress-user_id" class="comment-meta-wordpress" value="">
+				<input type="hidden" name="wp_access_token" id="wordpress-access_token" class="comment-meta-wordpress" value="">
+				<p class="comment-form-posting-as pa-wordpress"><strong></strong> You are commenting using your <span class="skimlinks-unlinked">WordPress.com</span> account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( &#39;wordpress&#39; );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-twitter" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="./Shortest Path Algorithm using MapReduce _ adhoop_files/ad516503a11cd5ca435acc9bb6523536" alt="Twitter picture" width="25" class="no-grav">
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="twitter_avatar" id="twitter-avatar" class="comment-meta-twitter" value="">
+				<input type="hidden" name="twitter_user_id" id="twitter-user_id" class="comment-meta-twitter" value="">
+				<input type="hidden" name="twitter_access_token" id="twitter-access_token" class="comment-meta-twitter" value="">
+				<p class="comment-form-posting-as pa-twitter"><strong></strong> You are commenting using your Twitter account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( &#39;twitter&#39; );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-facebook" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="./Shortest Path Algorithm using MapReduce _ adhoop_files/ad516503a11cd5ca435acc9bb6523536" alt="Facebook photo" width="25" class="no-grav">
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="fb_avatar" id="facebook-avatar" class="comment-meta-facebook" value="">
+				<input type="hidden" name="fb_user_id" id="facebook-user_id" class="comment-meta-facebook" value="">
+				<input type="hidden" name="fb_access_token" id="facebook-access_token" class="comment-meta-facebook" value="">
+				<p class="comment-form-posting-as pa-facebook"><strong></strong> You are commenting using your Facebook account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( &#39;facebook&#39; );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-googleplus" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="./Shortest Path Algorithm using MapReduce _ adhoop_files/ad516503a11cd5ca435acc9bb6523536" alt="Google+ photo" width="25" class="no-grav">
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="googleplus_avatar" id="googleplus-avatar" class="comment-meta-googleplus" value="">
+				<input type="hidden" name="googleplus_user_id" id="googleplus-user_id" class="comment-meta-googleplus" value="">
+				<input type="hidden" name="googleplus_access_token" id="googleplus-access_token" class="comment-meta-googleplus" value="">
+				<p class="comment-form-posting-as pa-googleplus"><strong></strong> You are commenting using your Google+ account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( &#39;googleplus&#39; );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+
+	<div id="comment-form-load-service" class="comment-form-service">
+		<div class="comment-form-posting-as-cancel"><a href="javascript:HighlanderComments.cancelExternalWindow();">Cancel</a></div>
+		<p>Connecting to %s</p>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+var highlander_expando_javascript = function(){
+	var input = document.createElement( 'input' ),
+	    comment = jQuery( '#comment' );
+
+	if ( 'placeholder' in input ) {
+		comment.attr( 'placeholder', jQuery( '.comment-textarea label' ).remove().text() );
+	}
+
+	// Expando Mode: start small, then auto-resize on first click + text length
+	jQuery( '#comment-form-identity' ).hide();
+	jQuery( '#comment-form-subscribe' ).hide();
+	jQuery( '#commentform .form-submit' ).hide();
+
+	comment.css( { 'height':'10px' } ).one( 'focus', function() {
+		var timer = setInterval( HighlanderComments.resizeCallback, 10 )
+		jQuery( this ).animate( { 'height': HighlanderComments.initialHeight } ).delay( 100 ).queue( function(n) { clearInterval( timer ); HighlanderComments.resizeCallback(); n(); } );
+		jQuery( '#comment-form-identity' ).slideDown();
+		jQuery( '#comment-form-subscribe' ).slideDown();
+		jQuery( '#commentform .form-submit' ).slideDown();
+	});
+}
+jQuery(document).ready( highlander_expando_javascript );
+</script>
+
+<div id="comment-form-subscribe" style="display: none;">
+	<p class="comment-subscription-form"><input type="checkbox" name="subscribe" id="subscribe" value="subscribe" style="width: auto;"> <label class="subscribe-label" id="subscribe-label" for="subscribe" style="display: inline;">Notify me of new comments via email.</label></p></div>
+
+
+
+
+<p class="form-submit" style="display: none;"><input name="submit" type="submit" id="comment-submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="251" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="3271c8d810"></p>
+<input type="hidden" name="genseq" value="1507279669">
+<p style="display: none;"></p>			<input type="hidden" id="ak_js" name="ak_js" value="1507279676285"></form>
+			</div><!-- #respond -->
+	<div style="clear: both"></div>
+</div><!-- #comments -->
+
+
+				</div><!-- END Content -->
+				<div id="sidebar">
+										<ul class="xoxo">
+						<li id="categories-2" class="widget widget_categories"><h4 class="widgettitle">Categories</h4>		<ul>
+	<li class="cat-item cat-item-3251196"><a href="https://adhoop.wordpress.com/category/hadoop/">Hadoop</a> (16)
+</li>
+	<li class="cat-item cat-item-457"><a href="https://adhoop.wordpress.com/category/javascript/">JavaScript</a> (1)
+</li>
+	<li class="cat-item cat-item-3859232"><a href="https://adhoop.wordpress.com/category/mapreduce/">MapReduce</a> (15)
+</li>
+	<li class="cat-item cat-item-312256"><a href="https://adhoop.wordpress.com/category/scala/">Scala</a> (12)
+</li>
+		</ul>
+</li>		<li id="recent-posts-2" class="widget widget_recent_entries">		<h4 class="widgettitle">Recent Posts</h4>		<ul>
+					<li>
+				<a href="https://adhoop.wordpress.com/2014/02/11/scala-map-foreach/">Scala Map foreach</a>
+						</li>
+					<li>
+				<a href="https://adhoop.wordpress.com/2013/10/23/partialfunction/">PartialFunction</a>
+						</li>
+					<li>
+				<a href="https://adhoop.wordpress.com/2013/09/08/javascript-looping-through-arrays/">JavaScript: Looping Through&nbsp;Arrays</a>
+						</li>
+					<li>
+				<a href="https://adhoop.wordpress.com/2012/10/16/scala-find-element-with-maximum-occurances/">Scala Find Element With Maximum&nbsp;Occurances</a>
+						</li>
+					<li>
+				<a href="https://adhoop.wordpress.com/2012/05/31/test-your-hadoop-mapreduce-skills/">Test Your Hadoop MapReduce&nbsp;Skills</a>
+						</li>
+				</ul>
+		</li>		<li id="archives-2" class="widget widget_archive"><h4 class="widgettitle">Archives</h4>		<ul>
+			<li><a href="https://adhoop.wordpress.com/2014/02/">February 2014</a></li>
+	<li><a href="https://adhoop.wordpress.com/2013/10/">October 2013</a></li>
+	<li><a href="https://adhoop.wordpress.com/2013/09/">September 2013</a></li>
+	<li><a href="https://adhoop.wordpress.com/2012/10/">October 2012</a></li>
+	<li><a href="https://adhoop.wordpress.com/2012/05/">May 2012</a></li>
+	<li><a href="https://adhoop.wordpress.com/2012/04/">April 2012</a></li>
+	<li><a href="https://adhoop.wordpress.com/2012/03/">March 2012</a></li>
+	<li><a href="https://adhoop.wordpress.com/2012/02/">February 2012</a></li>
+		</ul>
+		</li><li id="meta-2" class="widget widget_meta"><h4 class="widgettitle">Meta</h4>			<ul>
+			<li><a href="https://wordpress.com/start?ref=wplogin">Register</a></li>			<li><a href="https://adhoop.wordpress.com/wp-login.php">Log in</a></li>
+			<li><a href="https://adhoop.wordpress.com/feed/">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://adhoop.wordpress.com/comments/feed/">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://wordpress.com/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.com</a></li>			</ul>
+			</li>					</ul>
+				</div><!-- END Sidebar -->
+				<div class="cl">&nbsp;</div>					</div><!-- #main-bot -->
+				</div><!-- #main-top -->
+			</div><!-- #main -->
+			<div id="footer">
+				<p><a href="https://wordpress.com/?ref=footer_blog">Blog at WordPress.com.</a>
+</p>
+
+				<p class="rss"><a href="https://adhoop.wordpress.com/feed/rss/">Entries (RSS)</a> and <a href="https://adhoop.wordpress.com/comments/feed/">Comments (RSS)</a></p>
+			</div><!-- #footer -->
+		</div><!-- #page -->
+		<!--  -->
+<script type="text/javascript" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/gprofiles.js.download"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/wpgroho.js.download"></script>
+
+	<script>
+		//initialize and attach hovercards to all gravatars
+		jQuery( document ).ready( function( $ ) {
+
+			if (typeof Gravatar === "undefined"){
+				return;
+			}
+
+			if ( typeof Gravatar.init !== "function" ) {
+				return;
+			}			
+
+			Gravatar.profile_cb = function( hash, id ) {
+				WPGroHo.syncProfileData( hash, id );
+			};
+			Gravatar.my_hash = WPGroHo.my_hash;
+			Gravatar.init( 'body', '#wp-admin-bar-my-account' );
+		});
+	</script>
+
+		<div style="display:none">
+	<div class="grofile-hash-map-bc9a24ee5430e8e806a2cf593fb8fca3">
+	</div>
+	<div class="grofile-hash-map-13d31cf81595611fa0a5fe5fb21fdd31">
+	</div>
+	</div>
+<script type="text/javascript">
+/* <![CDATA[ */
+var HighlanderComments = {"loggingInText":"Logging In\u2026","submittingText":"Posting Comment\u2026","postCommentText":"Post Comment","connectingToText":"Connecting to %s","commentingAsText":"%1$s: You are commenting using your %2$s account.","logoutText":"Log Out","loginText":"Log In","connectURL":"https:\/\/adhoop.wordpress.com\/public.api\/connect\/?action=request","logoutURL":"https:\/\/adhoop.wordpress.com\/wp-login.php?action=logout&_wpnonce=fb53551d06","homeURL":"https:\/\/adhoop.wordpress.com\/","postID":"251","gravDefault":"identicon","enterACommentError":"Please enter a comment","enterEmailError":"Please enter your email address here","invalidEmailError":"Invalid email address","enterAuthorError":"Please enter your name here","gravatarFromEmail":"This picture will show whenever you leave a comment. Click to customize it.","logInToExternalAccount":"Log in to use details from one of these accounts.","change":"Change","changeAccount":"Change Account","comment_registration":"0","userIsLoggedIn":"","isJetpack":"0","text_direction":"ltr"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/saved_resource(5)"></script>
+
+	<div id="carousel-reblog-box">
+		<form action="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/#" name="carousel-reblog">
+			<textarea id="carousel-reblog-content" name="carousel-reblog-content" placeholder="Add your thoughts here... (optional)"></textarea>
+			<label for="carousel-reblog-to-blog-id" id="carousel-reblog-lblogid">Post to</label>
+			<select name="carousel-reblog-to-blog-id" id="carousel-reblog-to-blog-id">
+						</select>
+
+			<div class="submit">
+				<span class="canceltext"><a href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/#" class="cancel">Cancel</a></span>
+				<input type="submit" name="carousel-reblog-submit" class="button" id="carousel-reblog-submit" value="Reblog Post">
+				<input type="hidden" id="carousel-reblog-blog-id" value="32782186">
+				<input type="hidden" id="carousel-reblog-blog-url" value="https://adhoop.wordpress.com">
+				<input type="hidden" id="carousel-reblog-blog-title" value="adhoop">
+				<input type="hidden" id="carousel-reblog-post-url" value="">
+				<input type="hidden" id="carousel-reblog-post-title" value="">
+			</div>
+
+			<input type="hidden" id="_wpnonce" name="_wpnonce" value="f97b24b285"><input type="hidden" name="_wp_http_referer" value="/2012/03/06/shortest-path-algorithm-in-mapreduce/">		</form>
+
+		<div class="arrow"></div>
+	</div>
+<script type="text/javascript" charset="UTF-8" id="polldaddyRatings"><!--//--><![CDATA[//><!--
+PDRTJS_settings_5614821_post_251={"id":5614821,"unique_id":"wp-post-251","title":"Shortest%20Path%20Algorithm%20using%26nbsp%3BMapReduce","permalink":"https:\/\/adhoop.wordpress.com\/2012\/03\/06\/shortest-path-algorithm-in-mapreduce\/","item_id":"_post_251"}; if ( typeof PDRTJS_RATING !== 'undefined' ){if ( typeof PDRTJS_5614821_post_251 == 'undefined' ){PDRTJS_5614821_post_251 = new PDRTJS_RATING( PDRTJS_settings_5614821_post_251 );}}
+//--><!]]></script><script type="text/javascript" charset="UTF-8" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/rating.js.download"></script>
+	<script type="text/javascript">
+		window.WPCOM_sharing_counts = {"https:\/\/adhoop.wordpress.com\/2012\/03\/06\/shortest-path-algorithm-in-mapreduce\/":251};
+	</script>
+		<script type="text/javascript">
+			var windowOpen;
+		jQuery(document).on( 'ready post-load', function(){
+			jQuery( 'a.share-twitter' ).on( 'click', function() {
+				if ( 'undefined' !== typeof windowOpen ){ // If there's another sharing window open, close it.
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery(this).attr( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+				return false;
+			});
+		});
+		</script>
+				<script type="text/javascript">
+			var windowOpen;
+		jQuery(document).on( 'ready post-load', function(){
+			jQuery( 'a.share-facebook' ).on( 'click', function() {
+				if ( 'undefined' !== typeof windowOpen ){ // If there's another sharing window open, close it.
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery(this).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+				return false;
+			});
+		});
+		</script>
+		<link rel="stylesheet" id="all-css-0-3" href="./Shortest Path Algorithm using MapReduce _ adhoop_files/jetpack-carousel.css" type="text/css" media="all">
+<!--[if lte IE 8]>
+<link rel='stylesheet' id='jetpack-carousel-ie8fix-css'  href='https://s1.wp.com/wp-content/mu-plugins/carousel/jetpack-carousel-ie8fix.css?m=1412618825h&#038;ver=20121024' type='text/css' media='all' />
+<![endif]-->
+<script type="text/javascript">
+/* <![CDATA[ */
+var actionbardata = {"siteID":"32782186","siteName":"adhoop","siteURL":"http:\/\/adhoop.wordpress.com","icon":"<img alt='' src='https:\/\/s1.wp.com\/i\/logo\/wpcom-gray-white.png' class='avatar avatar-50' height='50' width='50' \/>","canManageOptions":"","canCustomizeSite":"","isFollowing":"","themeSlug":"pub\/choco","signupURL":"https:\/\/wordpress.com\/start\/","loginURL":"https:\/\/adhoop.wordpress.com\/wp-login.php?redirect_to=https%3A%2F%2Fadhoop.wordpress.com%2F2012%2F03%2F06%2Fshortest-path-algorithm-in-mapreduce%2F","themeURL":"","xhrURL":"https:\/\/adhoop.wordpress.com\/wp-admin\/admin-ajax.php","nonce":"3e902004f8","isSingular":"1","isFolded":"","isLoggedIn":"","isMobile":"","subscribeNonce":"<input type=\"hidden\" id=\"_wpnonce\" name=\"_wpnonce\" value=\"bfbcdaf4e6\" \/>","referer":"https:\/\/adhoop.wordpress.com\/2012\/03\/06\/shortest-path-algorithm-in-mapreduce\/","canFollow":"1","feedID":"26218656","statusMessage":"","customizeLink":"https:\/\/adhoop.wordpress.com\/wp-admin\/customize.php?url=https%3A%2F%2Fadhoop.wordpress.com%2F2012%2F03%2F06%2Fshortest-path-algorithm-in-mapreduce%2F","postID":"251","shortlink":"http:\/\/wp.me\/p2dy8W-43","canEditPost":"","editLink":"https:\/\/wordpress.com\/post\/adhoop.wordpress.com\/251","statsLink":"https:\/\/wordpress.com\/stats\/post\/251\/adhoop.wordpress.com","i18n":{"view":"View site","follow":"Follow","following":"Following","edit":"Edit","login":"Log in","signup":"Sign up","customize":"Customize","report":"Report this content","themeInfo":"Get theme: Choco","shortlink":"Copy shortlink","copied":"Copied","followedText":"New posts from this site will now appear in your <a href=\"https:\/\/wordpress.com\/\">Reader<\/a>","foldBar":"Collapse this bar","unfoldBar":"Expand this bar","editSubs":"Manage subscriptions","viewReader":"View site in Reader","viewReadPost":"View post in Reader","subscribe":"Sign me up","enterEmail":"Enter your email address","followers":"","alreadyUser":"Already have a WordPress.com account? <a href=\"https:\/\/adhoop.wordpress.com\/wp-login.php?redirect_to=https%3A%2F%2Fadhoop.wordpress.com%2F2012%2F03%2F06%2Fshortest-path-algorithm-in-mapreduce%2F\">Log in now.<\/a>","stats":"Stats"}};
+/* ]]> */
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var jetpackCarouselStrings = {"widths":[370,700,1000,1200,1400,2000],"is_logged_in":"","lang":"en","ajaxurl":"https:\/\/adhoop.wordpress.com\/wp-admin\/admin-ajax.php","nonce":"7f843c76b7","display_exif":"1","display_geo":"1","single_image_gallery":"1","single_image_gallery_media_file":"","background_color":"black","comment":"Comment","post_comment":"Post Comment","write_comment":"Write a Comment...","loading_comments":"Loading Comments...","download_original":"View full size <span class=\"photo-size\">{0}<span class=\"photo-size-times\">\u00d7<\/span>{1}<\/span>","no_comment_text":"Please be sure to submit some text with your comment.","no_comment_email":"Please provide an email address to comment.","no_comment_author":"Please provide your name to comment.","comment_post_error":"Sorry, but there was an error posting your comment. Please try again later.","comment_approved":"Your comment was approved.","comment_unapproved":"Your comment is in moderation.","camera":"Camera","aperture":"Aperture","shutter_speed":"Shutter Speed","focal_length":"Focal Length","comment_registration":"0","require_name_email":"1","login_url":"https:\/\/adhoop.wordpress.com\/wp-login.php?redirect_to=https%3A%2F%2Fadhoop.wordpress.com%2F2012%2F03%2F06%2Fshortest-path-algorithm-in-mapreduce%2F","blog_id":"32782186","local_comments_commenting_as":"<fieldset><label for=\"email\">Email (Required)<\/label> <input type=\"text\" name=\"email\" class=\"jp-carousel-comment-form-field jp-carousel-comment-form-text-field\" id=\"jp-carousel-comment-form-email-field\" \/><\/fieldset><fieldset><label for=\"author\">Name (Required)<\/label> <input type=\"text\" name=\"author\" class=\"jp-carousel-comment-form-field jp-carousel-comment-form-text-field\" id=\"jp-carousel-comment-form-author-field\" \/><\/fieldset><fieldset><label for=\"url\">Website<\/label> <input type=\"text\" name=\"url\" class=\"jp-carousel-comment-form-field jp-carousel-comment-form-text-field\" id=\"jp-carousel-comment-form-url-field\" \/><\/fieldset>","reblog":"Reblog","reblogged":"Reblogged","reblog_add_thoughts":"Add your thoughts here... (optional)","reblogging":"Reblogging...","post_reblog":"Post Reblog","stats_query_args":"blog=32782186&v=wpcom&tz=-7&user_id=0&subd=adhoop","is_public":"1","reblog_enabled":""};
+/* ]]> */
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var sharing_js_options = {"lang":"en","counts":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/saved_resource(6)"></script><div id="actionbar" class="actnbr-pub-choco actnbr-has-follow actnbr-hidden"><ul><li class="actnbr-btn actnbr-hidden"> 			    	<a class="actnbr-action actnbr-actn-follow" href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/"><svg class="gridicon gridicon__follow" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 16v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3zM20 2v9h-4v3h-3v4H4c-1.1 0-2-.9-2-2V2h18zM8 13v-1H4v1h4zm3-3H4v1h7v-1zm0-2H4v1h7V8zm7-4H4v2h14V4z"></path></g></svg><span>Follow</span></a> 			    	<div class="actnbr-popover tip tip-top-left actnbr-notice"> 			    		<div class="tip-arrow"></div> 			    		<div class="tip-inner actnbr-follow-bubble"></div> 			    	</div> 			    </li><li class="actnbr-ellipsis actnbr-hidden"> 			  <svg class="gridicon gridicon__ellipsis" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><circle cx="5" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle></g></svg> 			  <div class="actnbr-popover tip tip-top-left actnbr-more"> 			  	<div class="tip-arrow"></div> 			  	<div class="tip-inner"> 				  <ul> 				    <li class="actnbr-sitename actnbr-hidden"><a href="http://adhoop.wordpress.com/"><img alt="" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/wpcom-gray-white.png" class="avatar avatar-50" height="50" width="50"> adhoop</a></li> 				   	<li class="actnbr-folded-customize actnbr-hidden"><a href="https://adhoop.wordpress.com/wp-admin/customize.php?url=https%3A%2F%2Fadhoop.wordpress.com%2F2012%2F03%2F06%2Fshortest-path-algorithm-in-mapreduce%2F"><svg class="gridicon gridicon__customize" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M2 6c0-1.505.78-3.08 2-4 0 .845.69 2 2 2 1.657 0 3 1.343 3 3 0 .386-.08.752-.212 1.09.74.594 1.476 1.19 2.19 1.81L8.9 11.98c-.62-.716-1.214-1.454-1.807-2.192C6.753 9.92 6.387 10 6 10c-2.21 0-4-1.79-4-4zm12.152 6.848l1.34-1.34c.607.304 1.283.492 2.008.492 2.485 0 4.5-2.015 4.5-4.5 0-.725-.188-1.4-.493-2.007L18 9l-2-2 3.507-3.507C18.9 3.188 18.225 3 17.5 3 15.015 3 13 5.015 13 7.5c0 .725.188 1.4.493 2.007L3 20l2 2 6.848-6.848c1.885 1.928 3.874 3.753 5.977 5.45l1.425 1.148 1.5-1.5-1.15-1.425c-1.695-2.103-3.52-4.092-5.448-5.977z" data-reactid=".2.1.1:0.1b.0"></path></g></svg><span>Customize<span></span></span></a></li> 				    <li class="actnbr-folded-follow actnbr-hidden"><a class="actnbr-action actnbr-actn-follow" href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/"><svg class="gridicon gridicon__follow" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 16v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3zM20 2v9h-4v3h-3v4H4c-1.1 0-2-.9-2-2V2h18zM8 13v-1H4v1h4zm3-3H4v1h7v-1zm0-2H4v1h7V8zm7-4H4v2h14V4z"></path></g></svg><span>Follow</span></a></li> 					<li class="actnbr-signup actnbr-hidden"><a href="https://wordpress.com/start/">Sign up</a></li> 				    <li class="actnbr-login actnbr-hidden"><a href="https://adhoop.wordpress.com/wp-login.php?redirect_to=https%3A%2F%2Fadhoop.wordpress.com%2F2012%2F03%2F06%2Fshortest-path-algorithm-in-mapreduce%2F">Log in</a></li> 				     				    <li class="actnbr-shortlink actnbr-hidden"><a href="http://wp.me/p2dy8W-43">Copy shortlink</a></li> 				    <li class="flb-report actnbr-hidden"><a href="http://en.wordpress.com/abuse/">Report this content</a></li> 				     				     				    <li class="actnbr-subs actnbr-hidden"><a href="https://subscribe.wordpress.com/">Manage subscriptions</a></li> 				    <li class="actnbr-fold actnbr-hidden"><a href="https://adhoop.wordpress.com/2012/03/06/shortest-path-algorithm-in-mapreduce/">Collapse this bar</a></li> 			      </ul> 			    </div> 		      </div> 		    </li> 	      </ul></div>
+<script type="text/javascript">
+// <![CDATA[
+(function() {
+try{
+  if ( window.external &&'msIsSiteMode' in window.external) {
+    if (window.external.msIsSiteMode()) {
+      var jl = document.createElement('script');
+      jl.type='text/javascript';
+      jl.async=true;
+      jl.src='/wp-content/plugins/ie-sitemode/custom-jumplist.php';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(jl, s);
+    }
+  }
+}catch(e){}
+})();
+// ]]>
+</script>	<script type="text/javascript">
+	var skimlinks_pub_id = "725X584219"
+	var skimlinks_sitename = "adhoop.wordpress.com";
+	</script>
+	<script type="text/javascript" defer="" src="./Shortest Path Algorithm using MapReduce _ adhoop_files/725X1342.skimlinks.js.download"></script>		<iframe src="./Shortest Path Algorithm using MapReduce _ adhoop_files/master.html" scrolling="no" id="likes-master" name="likes-master" style="display:none;"></iframe>
+		<div id="likes-other-gravatars"><div class="likes-text"><span>%d</span> bloggers like this:</div><ul class="wpl-avatars sd-like-gravatars"></ul></div>
+<script src="./Shortest Path Algorithm using MapReduce _ adhoop_files/w.js.download" type="text/javascript" async="" defer=""></script>
+<script type="text/javascript">
+_tkq = window._tkq || [];
+_stq = window._stq || [];
+_tkq.push(['storeContext', {'blog_id':'32782186','blog_tz':'-7','user_lang':'en','blog_lang':'en','user_id':'0'}]);
+_stq.push(['view', {'blog':'32782186','v':'wpcom','tz':'-7','user_id':'0','post':'251','subd':'adhoop'}]);
+_stq.push(['extra', {'crypt':'UE5XaGUuOTlwaD85flAmcm1mcmZsaDhkV11YdTdvUG14Q2VDQTR4LlUsLi82dU1mai9BMnMzSitqWkpxbS9HeDNZX3kzU3Fpc1krSXQvLFl2LnVlVHZnc20vTCsycExmSFtfNjhZcmNZUUdSNTV2Z0ErakNSJk8yJlUuP09dbjNvWWZnbF1+QkpybVYmeWhTWVRnMmZFWiU/Y3RHJVJHTmZmTHZLbTFEOUYmTUd3WmRDRT9CMWhBbmxyRTBLS0Fba351bUs2S1NfSj95ZU1HSnxkT0dEUHREa2ddW3NrNVZBWlFlRV8uL3FqV3BDL1t5Sk9CLFpVV35rQ1JhVEssUw=='}]);
+_stq.push([ 'clickTrackerInit', '32782186', '251' ]);
+	</script>
+<noscript>&lt;img src="https://pixel.wp.com/b.gif?v=noscript" style="height:0px;width:0px;overflow:hidden" alt="" /&gt;</noscript>
+<script>
+if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
+
+	wpcom_mobile_user_agent_info.init();
+	var mobileStatsQueryString = "";
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedPlatformName )
+		mobileStatsQueryString += "&x_" + 'mobile_platforms' + '=' + wpcom_mobile_user_agent_info.matchedPlatformName;
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedUserAgentName )
+		mobileStatsQueryString += "&x_" + 'mobile_devices' + '=' + wpcom_mobile_user_agent_info.matchedUserAgentName;
+	
+	if( wpcom_mobile_user_agent_info.isIPad() )
+		mobileStatsQueryString += "&x_" + 'ipad_views' + '=' + 'views';
+
+	if( "" != mobileStatsQueryString ) {
+		new Image().src = document.location.protocol + '//pixel.wp.com/g.gif?v=wpcom-no-pv' + mobileStatsQueryString + '&baba=' + Math.random();
+	}
+	
+}
+</script>	
+<img src="./Shortest Path Algorithm using MapReduce _ adhoop_files/g.gif" alt=":)" id="wpstats"></body></html>
